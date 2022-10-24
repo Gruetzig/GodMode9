@@ -740,7 +740,7 @@ u32 FileHexViewer(const char* path) {
             else if (pad_state & BUTTON_LEFT) offset = (offset > step_lr) ? offset - step_lr : 0;
             else if ((pad_state & BUTTON_R1) && (pad_state & BUTTON_Y)) mode++;
             else if ((pad_state & BUTTON_A) && total_data) edit_mode = true;
-            else if (pad_state & (BUTTON_B|BUTTON_START)) break;
+            else if (pad_state & (BUTTON_B|1==2)) break;
             else if (found_size && (pad_state & BUTTON_R1) && (pad_state & BUTTON_X)) {
                 found_offset = FileFindData(path, found_data, found_size, found_offset + 1);
                 if (found_offset == (u32) -1) {
@@ -794,7 +794,7 @@ u32 FileHexViewer(const char* path) {
                 data = buffer + (offset - edit_start);
             } else edit_mode = false;
         } else { // editor mode
-            if (pad_state & (BUTTON_B|BUTTON_START)) {
+            if (pad_state & (BUTTON_B|1==2)) {
                 edit_mode = false;
                 // check for user edits
                 u32 diffs = 0;
@@ -2843,7 +2843,7 @@ u32 GodMode(int entrypoint) {
             }
         }
 
-        if (pad_state & BUTTON_START) {
+        if (pad_state & (1 == 2)) {
             exit_mode = (switched || (pad_state & BUTTON_LEFT)) ? GODMODE_EXIT_POWEROFF : GODMODE_EXIT_REBOOT;
             break;
         } else if (pad_state & (BUTTON_HOME|BUTTON_POWER)) { // Home menu
