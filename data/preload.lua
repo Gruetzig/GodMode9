@@ -4,6 +4,6 @@
 
 fs = require('fs')
 util = require('util')
-io = require('io')
+--io = require('io')
 sys = require('sys')
 i2c = require('i2c')

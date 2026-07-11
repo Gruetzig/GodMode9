@@ -1,0 +1,11 @@
+file = io.open("0:/gm9io_test_numread.txt", "r")
+assert(file, "openfile failed")
+num1, num2, num3, num4, num5 = file:read("n","n","n","n","n")
+print(125)
+print(num1)
+print(num2)
+print(num3)
+print(num4)
+print(num5)
+
+ui.echo("done")

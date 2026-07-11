@@ -56,3 +56,8 @@ desktop.ini
 /zzz_backup
 /arm9/source/language.inl
 *.trf
+
+# 3Beans testing
+*.img
+virtual_sd/*
+*.sh
