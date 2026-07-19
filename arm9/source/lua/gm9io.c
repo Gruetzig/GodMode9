@@ -58,7 +58,7 @@ static int readnumber(lua_State* L, FIL* f, FRESULT* res) {
     buffer[br] = '\0';
     size_t size = lua_stringtonumber(L, buffer);
     if (!size) {
-        lua_pushnil(L);
+        luaL_pushfail(L);
         return 1;
     }
     f->fptr -= br-size;
@@ -128,6 +128,18 @@ static int readline(lua_State* L, FIL* f, FRESULT* res, bool keep_newline) {
         str = luaL_prepbuffer(&buffer);
         *res = fvx_read(f, str, LUAL_BUFFERSIZE, &br);
         if (br == 0) { //eof
+            //This took me 1 week to figure out: A LuaL_Buffer "placeholder" lightuserdata is pushed onto
+            //the stack at luaL_buffinit()
+            //Generally, this wouldnt be an issue if I want to push a fail, because only the arg count you return is accounted for
+            //when returning from a C routine. But if I chain multiple of these functions together,
+            //and use luaL_buffers, the lightuserdata becomes problematic: 
+            //In addition to the fail pushed, the function also pushed lightuserdata for each iteration before that:
+            //That means, after 2 iterations, the stack looks like this:
+            // lightuserdata - nil - lightuserdata - nil
+            // If I return 2 now, the returned values are not nil and nil, but lightuserdata and nil!
+            //So, when a fail needs to be pushed and the C stack needs to remain valid, we need to first pop the lightuserdata
+            //to ensure only one value is added to the stack on each iteration
+            lua_pop(L, 1);
             luaL_pushfail(L);
             return 1;
         }
