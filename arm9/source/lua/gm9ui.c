@@ -28,7 +28,7 @@ void ClearOutputBuffer(void) {
     memset(output_buffer, 0, sizeof(output_buffer));
 }
 
-void WriteToOutputBuffer(char* text) {
+void WriteToOutputBuffer(const char* text) {
     strlcpy(output_buffer[OUTPUTMAXLINES - 1], text, OUTPUTMAXCHARSPERLINE);
 }
 
